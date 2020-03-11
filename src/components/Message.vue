@@ -15,7 +15,7 @@
     <div class="kaiwa-text-left" v-if="displayRight">
       <p class="kaiwa-text">{{ message.text }}</p>
       <div>
-        <img :src="message.image" style="width:200px; height:auto;" />
+        <img :src="message.image" style="width:200px; height:auto;" v-show="displayImage" />
       </div>
       <el-button
         type="danger"
@@ -41,7 +41,7 @@
     <div class="kaiwa-text-right" v-else>
       <p class="kaiwa-text">{{ message.text }}</p>
       <div>
-        <img :src="message.image" style="width:200px; height:auto;" />
+        <img :src="message.image" style="width:200px; height:auto;" v-show="displayImage" />
       </div>
       <el-button
         type="danger"
@@ -76,7 +76,8 @@ export default {
       updateMessage: "",
       displayRight: false,
       dialogVisible: false,
-      displayButton: false
+      displayButton: false,
+      displayImage: false
     };
   },
   computed: {
@@ -131,6 +132,9 @@ export default {
       console.log(this.user.uid);
       console.log(this.message.user.id);
       this.displayButton = true;
+    }
+    if (this.message.image != null) {
+      this.displayImage = true;
     }
   }
 };
@@ -192,7 +196,7 @@ export default {
   float: right;
 }
 p.kaiwa-text {
-  margin: 0 0 20px;
+  margin: 0 0 5px;
 }
 p.kaiwa-text:last-child {
   margin-bottom: 0;
@@ -235,5 +239,30 @@ p.kaiwa-text:last-child {
   clear: both;
   content: "";
   display: block;
+}
+@media screen and (max-width: 479px) {
+  .kaiwa-img-left {
+    margin: 0;
+    float: left;
+    width: 50px;
+    height: 50px;
+    margin-right: -60px;
+  }
+  /* 右画像 */
+  .kaiwa-img-right {
+    margin: 0;
+    float: right;
+    width: 50px;
+    height: 50px;
+    margin-left: -60px;
+  }
+  /* 画像の下のテキスト */
+  .kaiwa-img-description {
+    padding: 5px 0 0;
+    font-size: 8px;
+    text-align: center;
+    position: relative;
+    bottom: 10px;
+  }
 }
 </style>

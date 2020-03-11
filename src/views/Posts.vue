@@ -174,7 +174,7 @@ p {
 }
 .college {
   color: #9e9e9e;
-  padding-top: 10px;
+  padding-top: 15px;
 }
 .posted-user {
   display: flex;
@@ -234,6 +234,12 @@ p {
   .posts-container {
     overflow: hidden;
   }
+  .image {
+    width: 100%;
+    height: 125px;
+    object-fit: cover;
+    border-radius: 10px 10px 0 0;
+  }
   .card {
     width: 48%;
     height: auto;
@@ -244,6 +250,22 @@ p {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
+  }
+  .thumbnail {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  .college {
+    color: #9e9e9e;
+    padding-top: 5px;
+  }
+  .search-bar {
+    width: 80%;
+    padding-left: 10%;
+    padding-top: 30px;
+    text-align: center;
   }
 }
 </style>

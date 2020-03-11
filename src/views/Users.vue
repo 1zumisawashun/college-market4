@@ -6,7 +6,6 @@
         <div v-for="(user, index) in users" :key="index">
           <p>{{ user.name }}さんのマイページ</p>
           <img :src="user.thumbnail" class="thumbnail" />
-          <p>{{ user.email }}</p>
         </div>
       </el-tab-pane>
       <el-tab-pane label="POSTED" name="second">
@@ -237,6 +236,22 @@ export default {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
+  }
+  .image {
+    width: 100%;
+    height: 125px;
+    object-fit: cover;
+    border-radius: 10px 10px 0 0;
+  }
+  .thumbnail {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  .college {
+    color: #9e9e9e;
+    padding-top: 5px;
   }
 }
 </style>

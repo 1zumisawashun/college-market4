@@ -10,7 +10,7 @@
           </div>
         </div>
         <!--eslint-disable-->
-        <el-drawer title="college market" :visible.sync="drawer" :direction="direction">
+        <el-drawer :visible.sync="drawer" :direction="direction" size="50%">
           <div class="link-container">
             <p>
               <router-link to="/posts">Home Page</router-link>
@@ -282,10 +282,12 @@ export default {
   .drower-container {
     display: block;
   }
-  .link-container {
+  .link-container a,
+  .link-container p {
     color: #4a4141;
     text-decoration: none;
     text-align: center;
+    font-weight: bold;
   }
   .logout {
     cursor: pointer;

@@ -4,12 +4,14 @@
       <div v-for="(post, index) in post" :key="index">
         <div class="title-container">
           <span class="title">{{ post.title }}</span>
+
           <el-button
             type="primary"
             icon="el-icon-edit"
             circle
             @click="openUpdateModal"
             v-show="eraseElement"
+            style="padding:10px;"
           ></el-button>
         </div>
         <el-dialog title :visible.sync="dialogVisible" width="70%">
@@ -46,6 +48,7 @@
           <img :src="post.image" class="image" />
           <div class="content-block">
             投稿者のコメント
+            <hr />
             <p>{{ post.content }}</p>
           </div>
         </div>
@@ -71,16 +74,17 @@
         </table>
 
         <div class="price-container">
-          <h1 class="price">¥{{ post.price }}</h1>
-          <h1 class="onSale" v-show="post.onsale">販売中</h1>
-          <h1 class="soldOut" v-show="post.soldout">売り切れ</h1>
+          <div class="price">¥{{ post.price }}</div>
+          <div class="onSale" v-show="post.onsale">販売中</div>
+          <div class="soldOut" v-show="post.soldout">売り切れ</div>
         </div>
         <!--eslint-disable-->
         <div class="chat-maker">
           <el-button
             @click="makeChannels(post.title, post.user.id, post.image)"
             v-show="eraseChat"
-          >chat-maker</el-button>
+            type="primary"
+          >交渉する</el-button>
         </div>
       </div>
       <router-link to="/posts">戻る</router-link>
@@ -248,7 +252,7 @@ export default {
   width: 70%;
   height: auto;
   margin: 0 auto;
-  margin-top: 50px;
+  margin-top: 20px;
 }
 .post-info {
   display: flex;
@@ -273,7 +277,7 @@ export default {
   height: auto;
   font-weight: bold;
   font-size: 40px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 table {
   width: 100%;
@@ -327,19 +331,31 @@ table td {
   margin-top: 10px;
 }
 .price {
+  font-size: 30px;
   text-align: center;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 .onSale {
   color: white;
   text-align: center;
   background-color: #4a4141;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  font-weight: bold;
+  font-size: 30px;
+  margin-bottom: 10px;
 }
 .soldOut {
   text-align: center;
   color: #4a4141;
   background-color: white;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  font-weight: bold;
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+.chat-maker {
+  margin-bottom: 10px;
 }
 
 @media screen and (max-width: 479px) {
@@ -361,7 +377,13 @@ table td {
     width: 90%;
     height: auto;
     margin: 0 auto;
-    margin-top: 50px;
+    margin-top: 10px;
+  }
+  .title-container {
+    width: 100%;
+    height: auto;
+    font-size: 30px;
+    text-align: justify;
   }
 }
 </style>
