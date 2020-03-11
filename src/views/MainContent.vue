@@ -1,5 +1,6 @@
 <template>
   <div>
+    <PostForm />
     <div class="card" id="card-visitors">
       <div class="header">
         <router-link to="/posts" class="indicator"></router-link>
@@ -21,7 +22,12 @@
 </template>
 
 <script>
-export default {};
+import PostForm from "@/components/PostForm";
+export default {
+  components: {
+    PostForm
+  }
+};
 </script>
 
 <style scoped>
