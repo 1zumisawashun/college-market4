@@ -83,8 +83,7 @@ export default {
       post: [],
       dialogVisible: false,
       updateContent: "",
-      eraseElement: false,
-      eraseChat: true
+      eraseElement: null
     };
   },
   computed: {

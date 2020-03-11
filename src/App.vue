@@ -9,7 +9,7 @@
             <div></div>
           </div>
         </div>
-
+        <!--eslint-disable-->
         <el-drawer title="college market" :visible.sync="drawer" :direction="direction">
           <div class="link-container">
             <p>
@@ -188,22 +188,33 @@ export default {
         .auth()
         .signInWithPopup(provider)
         .then(result => {
-          db.collection("users").add({
-            id: result.user.uid,
-            name: result.user.displayName,
-            thumbnail: result.user.photoURL,
-            email: result.user.email
-          });
-          const user = result.user;
-          console.log(provider);
-          this.setUser(user);
-          console.log(result); //resultの中にログインuser情報を保持している。多分引数だからresult関係なしに持ってこれる奴や
-          console.log(this.$store.state.user);
-          console.log(user);
-          this.dialogVisible = false;
+          if (result.user.email.match(/ac.jp/)) {
+            db.collection("users").add({
+              id: result.user.uid,
+              name: result.user.displayName,
+              thumbnail: result.user.photoURL,
+              email: result.user.email
+            });
+            const user = result.user;
+            console.log(provider);
+            this.setUser(user);
+            console.log(result); //resultの中にログインuser情報を保持している。多分引数だからresult関係なしに持ってこれる奴や
+            console.log(this.$store.state.user);
+            console.log(user);
+            this.dialogVisible = false;
+          } else {
+            firebase
+              .auth()
+              .signOut()
+              .then(() => {
+                this.setUser(null);
+                window.alert("大学ドメインでログインしてください");
+              });
+          }
         })
         .catch(error => {
-          window.alert(error);
+          window.alert("error");
+          console.log(error);
         });
     },
 
