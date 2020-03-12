@@ -246,6 +246,7 @@ p {
   }
 
   .content {
+    height: 60px;
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;

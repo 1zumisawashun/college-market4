@@ -152,6 +152,9 @@ export default {
 }
 
 @media screen and (max-width: 479px) {
+  .card-container {
+    padding: 10px 0;
+  }
   .image-container {
     width: 25%;
   }
@@ -160,6 +163,14 @@ export default {
   }
   .button-container {
     width: 15%;
+    padding-top: 12px;
+  }
+  .chat-name {
+    padding-top: 10px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
   }
 }
 </style>

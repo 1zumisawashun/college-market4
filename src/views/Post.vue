@@ -4,18 +4,8 @@
       <div v-for="(post, index) in post" :key="index">
         <div class="title-container">
           <span class="title">{{ post.title }}</span>
-
-          <el-button
-            type="primary"
-            icon="el-icon-edit"
-            circle
-            @click="openUpdateModal"
-            v-show="eraseElement"
-            style="padding:10px;"
-          ></el-button>
         </div>
-        <el-dialog title :visible.sync="dialogVisible" width="70%">
-          <p>編集内容を記入してください</p>
+        <el-dialog title :visible.sync="dialogVisible" width="80%">
           <!-- <PostForm /> -->
           <div class="form-container">
             <!--eslint-disable-->
@@ -48,7 +38,7 @@
           <img :src="post.image" class="image" />
           <div class="content-block">
             投稿者のコメント
-            <hr />
+            <hr color="lightgray" size="1" />
             <p>{{ post.content }}</p>
           </div>
         </div>
@@ -80,7 +70,9 @@
         </div>
         <!--eslint-disable-->
         <div class="chat-maker">
+          <el-button type="primary" @click="openUpdateModal" v-show="eraseElement">編集する</el-button>
           <el-button
+            style="margin-left:0;"
             @click="makeChannels(post.title, post.user.id, post.image)"
             v-show="eraseChat"
             type="primary"
@@ -360,9 +352,11 @@ table td {
 
 @media screen and (max-width: 479px) {
   .image {
-    width: 100%;
-    height: 500px;
+    width: 70%;
+    height: 335px;
     object-fit: cover;
+    margin: 0 auto;
+    margin-bottom: 15px;
   }
   .post-info {
     width: 100%;

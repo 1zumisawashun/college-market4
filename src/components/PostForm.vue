@@ -9,9 +9,11 @@
           <el-input type="text" v-model="college" placeholder="大学名を記入してください" />
           <el-input type="text" v-model="major" placeholder="学部名を記入してください" />
           <el-input type="text" v-model="price" placeholder="値段を記入してください" />
+
           <el-checkbox v-model="cashless">キャッシュレス</el-checkbox>
           <el-checkbox v-model="cash">現金</el-checkbox>
           <el-checkbox v-model="other">その他</el-checkbox>
+
           <el-input type="text" v-model="content" placeholder="教科書の情報を記入してください" />
           <el-input type="text" v-model="status" placeholder="商品の状態を記入してください" />
           <el-checkbox v-model="onsale">出品中</el-checkbox>
@@ -27,7 +29,7 @@
             </div>
           </div>
           <el-button @click="addPosts">Post</el-button>
-          <p @click="closeModal" class="my-modal-close">close</p>
+          <div @click="closeModal" class="my-modal-close">close</div>
         </div>
       </div>
     </transition>
@@ -149,4 +151,5 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+</style>

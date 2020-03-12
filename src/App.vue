@@ -258,7 +258,7 @@ export default {
   position: fixed;
   top: 0;
   right: 20px;
-  color: #fff;
+  color: white;
   z-index: 101;
   cursor: pointer;
   font-size: 24px;
@@ -268,8 +268,8 @@ export default {
   height: auto;
   margin: 0 auto;
   background-color: white;
-  padding: 50px;
-  border-radius: 30px;
+  padding: 30px;
+  border-radius: 10px;
 }
 .drower-container {
   display: none;
@@ -279,6 +279,7 @@ export default {
   .sidebar {
     display: none;
   }
+
   .drower-container {
     display: block;
   }
@@ -288,6 +289,7 @@ export default {
     text-decoration: none;
     text-align: center;
     font-weight: bold;
+    font-size: 20px;
   }
   .logout {
     cursor: pointer;
@@ -305,6 +307,16 @@ export default {
     background-color: #4a4141;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   }
+  .my-modal-close {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    color: white;
+    z-index: 101;
+    cursor: pointer;
+    font-size: 24px;
+  }
+
   /* ドロワーアイコンの要素 */
   #humberger {
     position: relative;

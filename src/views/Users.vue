@@ -2,15 +2,15 @@
   <div class="user-container">
     <!--eslint-disable-->
     <el-tabs v-model="activeName" @tab-click="handleClick" class="tab-container">
-      <el-tab-pane label="USER" name="first">
+      <el-tab-pane label="PROFILE" name="first">
         <div v-for="(user, index) in users" :key="index">
           <p>{{ user.name }}さんのマイページ</p>
           <img :src="user.thumbnail" class="thumbnail" />
         </div>
       </el-tab-pane>
-      <el-tab-pane label="POSTED" name="second">
+      <el-tab-pane label="ONSALE" name="second">
         <div class="posts-container">
-          <div class="card l-card" v-for="(post, index) in posts" :key="index">
+          <div class="card l-card" v-for="(post, index) in onsales" :key="index">
             <div class="image-block l-thumbnail">
               <figure class="thumbnail-wrapper">
                 <img :src="post.image" class="image" />
@@ -31,7 +31,29 @@
           </div>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="LIKED" name="third">随時更新します…</el-tab-pane>
+      <el-tab-pane label="SOLDOUT" name="third">
+        <div class="posts-container">
+          <div class="card l-card" v-for="(post, index) in soldouts" :key="index">
+            <div class="image-block l-thumbnail">
+              <figure class="thumbnail-wrapper">
+                <img :src="post.image" class="image" />
+              </figure>
+              <router-link :to="`posts/${post.id}`">
+                <span class="more-text">Read More</span>
+              </router-link>
+            </div>
+            <div class="content-block text-content">
+              <div class="content">{{ post.title }}</div>
+              <div class="posted-user">
+                <router-link :to="`/users/${post.user.id}`" class="username">
+                  <img :src="post.user.thumbnail" class="thumbnail" />
+                </router-link>
+                <div class="college">{{ post.college }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -43,9 +65,10 @@ export default {
     return {
       users: [],
       name: "",
-      posts: [],
+      onsales: [],
       eraseElement: true,
-      activeName: "first"
+      activeName: "first",
+      soldouts: []
     };
   },
   computed: {
@@ -72,10 +95,11 @@ export default {
       });
     db.collection("posts")
       .where("user.id", "==", this.$route.params.id)
+      .where("onsale", "==", true)
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
-          this.posts.push({ id: doc.id, ...doc.data() });
+          this.onsales.push({ id: doc.id, ...doc.data() });
           console.log(doc.data().title);
           console.log(this.posts);
           console.log(doc.data().id);
@@ -85,6 +109,15 @@ export default {
     if (this.$route.params.id === this.user.uid) {
       this.eraseElement = false;
     }
+    db.collection("posts")
+      .where("user.id", "==", this.$route.params.id)
+      .where("soldout", "==", true)
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          this.soldouts.push({ id: doc.id, ...doc.data() });
+        });
+      });
   }
 };
 </script>
@@ -232,6 +265,7 @@ export default {
     height: auto;
   }
   .content {
+    height: 60px;
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
