@@ -9,8 +9,9 @@
             <div></div>
           </div>
         </div>
+
         <!--eslint-disable-->
-        <el-drawer :visible.sync="drawer" :direction="direction" size="50%">
+        <el-drawer :visible.sync="drawer" :direction="direction" size="40%">
           <div class="link-container">
             <p>
               <router-link to="/posts">Home Page</router-link>
@@ -27,6 +28,9 @@
             <PostForm />
           </div>
         </el-drawer>
+      </div>
+      <div class="logoname-container">
+        <img src="@/assets/logoname.png" class="logoname" />
       </div>
     </div>
     <div class="app-layout">
@@ -199,7 +203,6 @@ body {
   height: auto;
   border-radius: 15px;
 }
-
 .app-layout {
   display: flex;
 }
@@ -288,6 +291,23 @@ body {
 
   .drower-container {
     display: block;
+    margin-left: 5%;
+  }
+  .humberger-container {
+    width: 15%;
+    text-align: center;
+    padding-top: 12.5px;
+  }
+  .logoname {
+    padding-top: 13px;
+    width: 250px;
+    height: 50px;
+    object-fit: cover;
+  }
+  .logoname-container {
+    width: 100%;
+    height: auto;
+    text-align: right;
   }
   .link-container a,
   .link-container p {
@@ -310,6 +330,7 @@ body {
   .header {
     width: 100%;
     height: 50px;
+    display: flex;
     background-color: #4a4141;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   }
@@ -349,11 +370,6 @@ body {
   }
   #humberger div:nth-of-type(3) {
     bottom: 0;
-  }
-  .humberger-container {
-    width: 15%;
-    text-align: center;
-    padding-top: 12.5px;
   }
 }
 </style>
