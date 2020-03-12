@@ -181,6 +181,11 @@ export default {
 </script>
 
 <style>
+html,
+body {
+  margin: 0px;
+  padding: 0px;
+}
 .logo-container {
   width: 100%;
   height: auto;
@@ -201,7 +206,7 @@ export default {
 .sidebar {
   width: 300px;
   background: #4a4141;
-  height: 200vh;
+  height: auto;
   padding: 20px;
 }
 .sidebar a {
@@ -215,7 +220,8 @@ export default {
   width: 100%;
   /* ここを変更 */
   background: #f1f1f1;
-  height: 200vh;
+  min-height: 100vh;
+  height: auto;
 }
 
 .logout {
