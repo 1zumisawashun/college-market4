@@ -114,38 +114,57 @@ export default {
         let storageRef = firebase
           .storage()
           .ref(`posts/${this.user.displayName}/` + this.file.name);
-        storageRef.getDownloadURL().then(url => {
-          //getDownloadURLメソッドでstorageから取得している;
-          console.log(url);
-          console.log(this.image);
-          this.url = url;
-          //このurlはfirebaseからの画像情報になる;
-          window.alert("storageに格納しました");
-          db.collection("posts").add({
-            title: this.title,
-            content: this.content,
-            status: this.status,
-            college: this.college,
-            major: this.major,
-            price: this.price,
-            cashless: this.cashless,
-            cash: this.cash,
-            other: this.other,
-            onsale: this.onsale,
-            soldout: this.soldout,
-            image: this.url,
-            createdAt: new Date().getTime(),
-            user: {
-              id: this.user.uid,
-              name: this.user.displayName,
-              thumbnail: this.user.photoURL
-            }
+        storageRef
+          .getDownloadURL()
+          .then(url => {
+            //getDownloadURLメソッドでstorageから取得している;
+            console.log(url);
+            console.log(this.image);
+            this.url = url;
+            //このurlはfirebaseからの画像情報になる;
+            window.alert("storageに格納しました");
+            db.collection("posts").add({
+              title: this.title,
+              content: this.content,
+              status: this.status,
+              college: this.college,
+              major: this.major,
+              price: this.price,
+              cashless: this.cashless,
+              cash: this.cash,
+              other: this.other,
+              onsale: this.onsale,
+              soldout: this.soldout,
+              image: this.url,
+              createdAt: new Date().getTime(),
+              user: {
+                id: this.user.uid,
+                name: this.user.displayName,
+                thumbnail: this.user.photoURL
+              }
+            });
+          })
+          .then(() => {
+            console.log(this.url);
+            window.alert("firestoreに格納しました。これで表示されます");
+            this.modal = false;
+            this.title = null;
+            this.content = null;
+            this.status = null;
+            this.college = null;
+            this.major = null;
+            this.price = null;
+            this.cashless = null;
+            this.cash = null;
+            this.other = null;
+            this.onsale = null;
+            this.soldout = null;
+            //この3つセットで画像の要素になっている為
+            this.url = null;
+            this.image = null;
+            this.file = null;
           });
-        });
-        console.log(this.url);
-        window.alert("firestoreに格納しました。これで表示されます");
       });
-      this.image = null;
     }
   }
 };

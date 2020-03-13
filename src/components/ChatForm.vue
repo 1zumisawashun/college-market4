@@ -8,7 +8,7 @@
       v-if="isAuthenticated"
       v-on:keydown.enter="addMessage"
     />
-    <textarea class="textarea-container" v-model="text" v-else v-on:click="openLoginModal" />
+    <!-- <textarea class="textarea-container" v-model="text" v-else v-on:click="openLoginModal" /> -->
     <div id="image-container">
       <div v-if="!image">
         <input type="file" @change="onFileChange" class="file-container" />
@@ -23,6 +23,7 @@
         <img src="@/assets/google_sign_in.png" @click="login" />
       </div>
     </el-dialog>
+    <el-button @click="addMessage">送信する</el-button>
   </div>
 </template>
 
@@ -75,32 +76,39 @@ export default {
           let storageRef = firebase
             .storage()
             .ref(`images/${this.user.displayName}/` + this.file.name);
-          storageRef.getDownloadURL().then(url => {
-            //getDownloadURLメソッドでstorageから取得している
-            console.log(url);
-            console.log(this.image);
-            this.url = url;
-            //このurlはfirebaseからの画像情報になる
-            window.alert("storageに格納しました");
-            const channelId = this.$route.params.id;
-            db.collection("channels")
-              .doc(channelId)
-              .collection("messages")
-              .add({
-                text: this.text,
-                image: this.url,
-                createdAt: new Date().getTime(),
-                user: {
-                  id: this.user.uid,
-                  name: this.user.displayName,
-                  thumbnail: this.user.photoURL
-                }
-              });
-          });
-          console.log(this.url);
-          window.alert("firestoreに格納しました");
+          storageRef
+            .getDownloadURL()
+            .then(url => {
+              //getDownloadURLメソッドでstorageから取得している
+              console.log(url);
+              console.log(this.image);
+              this.url = url;
+              //このurlはfirebaseからの画像情報になる
+              window.alert("storageに格納しました");
+              const channelId = this.$route.params.id;
+              db.collection("channels")
+                .doc(channelId)
+                .collection("messages")
+                .add({
+                  text: this.text,
+                  image: this.url,
+                  createdAt: new Date().getTime(),
+                  user: {
+                    id: this.user.uid,
+                    name: this.user.displayName,
+                    thumbnail: this.user.photoURL
+                  }
+                });
+            })
+            .then(() => {
+              console.log(this.url);
+              window.alert("firestoreに格納しました");
+              this.url = null;
+              this.text = null;
+              this.image = null;
+              this.file = null;
+            });
         });
-        this.image = null;
       } else {
         const channelId = this.$route.params.id;
         db.collection("channels")
@@ -114,42 +122,46 @@ export default {
               name: this.user.displayName,
               thumbnail: this.user.photoURL
             }
+          })
+          .then(() => {
+            console.log(this.url);
+            window.alert("テキストのみを出力します");
+            this.text = null;
           });
-        window.alert("テキストを出力します");
       }
     },
 
     keyDownedForJPComversion(event) {
       const codeForConversion = 229;
       return event.keyCode === codeForConversion;
-    },
-    openLoginModal() {
-      this.dialogVisible = true;
-    },
-    login() {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      firebase
-        .auth()
-        .signInWithPopup(provider)
-        .then(result => {
-          db.collection("users").add({
-            id: result.user.uid,
-            name: result.user.displayName,
-            thumbnail: result.user.photoURL,
-            email: result.user.email
-          });
-          const user = result.user;
-          console.log(provider);
-          this.setUser(user);
-          console.log(result); //resultの中にログインuser情報を保持している。多分引数だからresult関係なしに持ってこれる奴や
-          console.log(this.$store.state.user);
-          console.log(user);
-          this.dialogVisible = false;
-        })
-        .catch(error => {
-          window.alert(error);
-        });
     }
+    // openLoginModal() {
+    //   this.dialogVisible = true;
+    // },
+    // login() {
+    //   const provider = new firebase.auth.GoogleAuthProvider();
+    //   firebase
+    //     .auth()
+    //     .signInWithPopup(provider)
+    //     .then(result => {
+    //       db.collection("users").add({
+    //         id: result.user.uid,
+    //         name: result.user.displayName,
+    //         thumbnail: result.user.photoURL,
+    //         email: result.user.email
+    //       });
+    //       const user = result.user;
+    //       console.log(provider);
+    //       this.setUser(user);
+    //       console.log(result);
+    //       console.log(this.$store.state.user);
+    //       console.log(user);
+    //       this.dialogVisible = false;
+    //     })
+    //     .catch(error => {
+    //       window.alert(error);
+    //     });
+    // }
   },
   data() {
     return {

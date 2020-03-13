@@ -24,19 +24,6 @@
         @click="remove(message.id)"
         v-show="displayButton"
       ></el-button>
-      <el-button
-        type="primary"
-        icon="el-icon-edit"
-        circle
-        @click="openUpdateModal"
-        v-show="displayButton"
-      ></el-button>
-
-      <el-dialog title :visible.sync="dialogVisible" width="70%">
-        <p>編集内容を記入してください</p>
-        <el-input type="text" v-model="updateMessage" :placeholder="message.text"></el-input>
-        <el-button @click="update(message.id)">更新する</el-button>
-      </el-dialog>
     </div>
     <div class="kaiwa-text-right" v-else>
       <p class="kaiwa-text">{{ message.text }}</p>
@@ -50,18 +37,6 @@
         @click="remove(message.id)"
         v-show="displayButton"
       ></el-button>
-      <el-button
-        type="primary"
-        icon="el-icon-edit"
-        circle
-        @click="openUpdateModal"
-        v-show="displayButton"
-      ></el-button>
-      <el-dialog title :visible.sync="dialogVisible" width="70%">
-        <p>編集内容を記入してください</p>
-        <el-input type="text" v-model="updateMessage" :placeholder="message.text"></el-input>
-        <el-button @click="update(message.id)">更新する</el-button>
-      </el-dialog>
     </div>
     <!--ここまで-->
   </div>
@@ -73,9 +48,7 @@ export default {
   props: ["message"],
   data() {
     return {
-      updateMessage: "",
       displayRight: false,
-      dialogVisible: false,
       displayButton: false,
       displayImage: false
     };
@@ -105,22 +78,6 @@ export default {
           alert("メッセージ削除に成功しました");
         });
       //ここではあくまで削除するだけで表示までしていない
-    },
-    update(id) {
-      const channelId = this.$route.params.id;
-      console.log(id);
-      console.log(channelId);
-      db.collection("channels")
-        .doc(channelId)
-        .collection("messages")
-        .doc(id)
-        .update({ text: this.updateMessage })
-        .then(() => {
-          alert("メッセージの更新に成功しました");
-        });
-    },
-    openUpdateModal() {
-      this.dialogVisible = true;
     }
   },
   mounted() {

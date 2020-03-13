@@ -203,6 +203,9 @@ body {
   height: auto;
   border-radius: 15px;
 }
+.logoname-container {
+  display: none;
+}
 .app-layout {
   display: flex;
 }
@@ -308,6 +311,7 @@ body {
     width: 100%;
     height: auto;
     text-align: right;
+    display: block;
   }
   .link-container a,
   .link-container p {

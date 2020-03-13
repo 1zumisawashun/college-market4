@@ -82,16 +82,28 @@ export default {
     }
   },
   mounted() {
+    // db.collection("posts")
+    //   .get()
+    //   .then(querySnapshot => {
+    //     querySnapshot.forEach(doc => {
+    //       this.posts.push({ id: doc.id, ...doc.data() });
+    //       console.log(doc.data());
+    //       console.log(doc.id);
+    //     });
+    //   });
+    // console.log(this.status);
+
     db.collection("posts")
-      .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          this.posts.push({ id: doc.id, ...doc.data() });
-          console.log(doc.data());
-          console.log(doc.id);
+      .orderBy("createdAt")
+      .onSnapshot(snapshot => {
+        snapshot.docChanges().forEach(change => {
+          /*eslint-disable*/
+          const doc = change.doc;
+          if (change.type === "added") {
+            this.posts.push({ id: doc.id, ...doc.data() });
+          }
         });
       });
-    console.log(this.status);
   }
 };
 </script>
