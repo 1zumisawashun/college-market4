@@ -5,30 +5,31 @@
         <div class="title-container">
           <span class="title">{{ post.title }}</span>
         </div>
-        <el-dialog title :visible.sync="dialogVisible" width="80%">
+        <el-dialog title :visible.sync="dialogVisible" width="90%">
           <!-- <PostForm /> -->
-          <div class="form-container">
-            <!--eslint-disable-->
-            <el-input type="text" v-model="title" placeholder="教科書のタイトルを記入してください" />
-            <el-input type="text" v-model="college" placeholder="大学名を記入してください" />
-            <el-input type="text" v-model="major" placeholder="学部名を記入してください" />
-            <el-input type="text" v-model="price" placeholder="値段を記入してください" />
-            <el-checkbox v-model="cashless">キャッシュレス</el-checkbox>
-            <el-checkbox v-model="cash">現金</el-checkbox>
-            <el-checkbox v-model="other">その他</el-checkbox>
-            <el-input type="text" v-model="content" placeholder="教科書の情報を記入してください" />
-            <el-input type="text" v-model="status" placeholder="商品の状態を記入してください" />
-            <el-checkbox v-model="onsale">出品中</el-checkbox>
-            <el-checkbox v-model="soldout">売り切れ</el-checkbox>
+          <!--eslint-disable-->
+          <el-input type="text" v-model="title" placeholder="教科書のタイトルを記入してください" />
+          <el-input type="text" v-model="college" placeholder="大学名を記入してください" />
+          <el-input type="text" v-model="major" placeholder="学部名を記入してください" />
+          <el-input type="text" v-model="price" placeholder="値段を記入してください" />
+          <el-checkbox v-model="cashless">キャッシュレス</el-checkbox>
+          <el-checkbox v-model="cash">現金</el-checkbox>
+          <el-checkbox v-model="other">その他</el-checkbox>
+          <el-input type="text" v-model="content" placeholder="教科書の情報を記入してください" />
+          <el-input type="text" v-model="status" placeholder="商品の状態を記入してください" />
+          <el-checkbox v-model="onsale">出品中</el-checkbox>
+          <el-checkbox v-model="soldout">売り切れ</el-checkbox>
 
-            <div id="image-container">
-              <div v-if="!image">
-                <input type="file" @change="onFileChange" />
-              </div>
-              <div v-else>
-                <img :src="image" class="postedImage" />
-                <el-button @click="removeImage">Remove</el-button>
-              </div>
+          <div id="image-container">
+            <div v-if="!image">
+              <label class="upload-img-btn">
+                upload
+                <input type="file" @change="onFileChange" style="display:none" />
+              </label>
+            </div>
+            <div v-else>
+              <img :src="image" class="postedImage" />
+              <el-button @click="removeImage">Remove</el-button>
             </div>
           </div>
           <el-button @click="update(post.id)">更新する</el-button>
@@ -37,7 +38,7 @@
         <div class="post-info">
           <img :src="post.image" class="image" />
           <div class="content-block">
-            投稿者のコメント
+            <p class="content-block-title">投稿者のコメント</p>
             <hr color="lightgray" size="1" />
             <p>{{ post.content }}</p>
           </div>
@@ -112,7 +113,9 @@ export default {
       onsale: false,
       soldout: false,
       file: "",
-      image: ""
+      image: "",
+
+      showdata: false
     };
   },
   computed: {
@@ -208,29 +211,77 @@ export default {
     }
   },
   mounted() {
-    const postsId = this.$route.params.id;
-    db.collection("posts")
-      .doc(postsId)
-      .get()
-      .then(docSnapshot => {
-        console.log(docSnapshot.data().user.id);
-        console.log(docSnapshot.id);
-        console.log(this.user);
-        this.post.push({ id: docSnapshot.id, ...docSnapshot.data() });
-        if (this.user.uid === docSnapshot.data().user.id) {
-          //もしcurrentUserとpostedUserが同じだったら、下の要素が発動
-          this.eraseElement = true;
-          //編集ボタンが出現する
-          this.eraseChat = false;
-          //chat-makerが消える
-          console.log(this.eraseElement);
-        }
-      });
+    // const postsId = this.$route.params.id;
+    // db.collection("posts")
+    //   .doc(postsId)
+    //   .get()
+    //   .then(docSnapshot => {
+    //     console.log(docSnapshot.data().user.id);
+    //     console.log(docSnapshot.id);
+    //     console.log(this.user);
+    //     this.post.push({ id: docSnapshot.id, ...docSnapshot.data() });
+    //     if (this.user.uid === docSnapshot.data().user.id) {
+    //       //もしcurrentUserとpostedUserが同じだったら、下の要素が発動
+    //       this.eraseElement = true;
+    //       //編集ボタンが出現する
+    //       this.eraseChat = false;
+    //       //chat-makerが消える
+    //       console.log(this.eraseElement);
+    //     }
+    //   });
     if (this.user === null) {
       this.eraseChat = false;
       console.log(this.user);
       console.log("ログインしていないユーザー画面を表示しています");
     }
+
+    db.collection("posts").onSnapshot(snapshot => {
+      snapshot.docChanges().forEach(change => {
+        /*eslint-disable*/
+        //docChanges()を使用するとtypeが分かる
+        console.log(snapshot);
+        const doc = change.doc;
+        console.log(change);
+        console.log(doc);
+        console.log(change.doc.id);
+        console.log(change.doc.data());
+        if (change.type === "modified") {
+          console.log("modifiedされました");
+          this.post[0] = { id: doc.id, ...doc.data() };
+          console.log(this.post);
+        } else if (
+          change.type === "added" &&
+          change.doc.id === this.$route.params.id
+        ) {
+          this.post.push({ id: doc.id, ...doc.data() });
+          if (this.user.uid === change.doc.data().user.id) {
+            //もしcurrentUserとpostedUserが同じだったら、下の要素が発動
+            this.eraseElement = true;
+            //編集ボタンが出現する
+            this.eraseChat = false;
+            //chat-makerが消える
+            console.log(this.eraseElement);
+          }
+        }
+      });
+    });
+
+    // db.collection("posts")
+    //   .doc(postsId)
+    //   .onSnapshot(snapshot => {
+    //     /*eslint-disable*/
+    //     const change = snapshot.docChanges();
+    //     console.log(change);
+    //     const doc = change.doc;
+    //     console.log(change.type);
+    //     console.log(change.data());
+    //     if (change.type === "modified") {
+    //       this.newpost.push({ id: doc.id, ...doc.data() });
+    //       console.log(doc.data());
+    //       console.log("修正しました");
+    //     }
+    //   });
+    // console.log("mounted");
   }
 };
 </script>
@@ -258,6 +309,9 @@ export default {
   border-radius: 10px;
   padding: 10px;
   background-color: white;
+}
+.content-block-title {
+  font-weight: bold;
 }
 .image {
   width: 30%;
@@ -349,6 +403,27 @@ table td {
 .chat-maker {
   margin-bottom: 10px;
 }
+.upload-img-btn {
+  margin: 0 0 0 2px;
+  padding: 12px 20px;
+  border-radius: 4px;
+  max-width: 50px;
+  font-size: 14px;
+  text-align: center;
+  display: block;
+  background-color: white;
+  color: black;
+  box-shadow: 0 2px 4px rgba(146, 146, 146, 0.8);
+  cursor: pointer;
+}
+/* .form-container {
+  width: 80%;
+  height: auto;
+  margin: 0 auto;
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+} */
 
 @media screen and (max-width: 479px) {
   .image {

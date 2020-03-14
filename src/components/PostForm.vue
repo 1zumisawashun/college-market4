@@ -21,7 +21,10 @@
 
           <div id="image-container">
             <div v-if="!image">
-              <input type="file" @change="onFileChange" />
+              <label class="upload-img-btn">
+                upload
+                <input type="file" @change="onFileChange" style="display:none;" />
+              </label>
             </div>
             <div v-else>
               <img :src="image" class="postedImage" />
@@ -170,5 +173,18 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.upload-img-btn {
+  margin: 0 0 0 2px;
+  padding: 12px 20px;
+  border-radius: 4px;
+  max-width: 50px;
+  font-size: 14px;
+  text-align: center;
+  display: block;
+  background-color: white;
+  color: black;
+  box-shadow: 0 2px 4px rgba(146, 146, 146, 0.8);
+  cursor: pointer;
+}
 </style>

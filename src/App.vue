@@ -228,6 +228,7 @@ body {
   background: #f1f1f1;
   min-height: 100vh;
   height: auto;
+  padding-bottom: 50px;
 }
 
 .logout {

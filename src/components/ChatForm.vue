@@ -1,29 +1,41 @@
 <template>
   <div class="input-container">
-    <img v-if="isAuthenticated" :src="user.photoURL" class="avatar" />
     <!--eslint-disable-->
-    <textarea
-      class="textarea-container"
-      v-model="text"
-      v-if="isAuthenticated"
-      v-on:keydown.enter="addMessage"
-    />
-    <!-- <textarea class="textarea-container" v-model="text" v-else v-on:click="openLoginModal" /> -->
-    <div id="image-container">
-      <div v-if="!image">
-        <input type="file" @change="onFileChange" class="file-container" />
-      </div>
-      <div v-else>
-        <img :src="image" class="image" />
-        <button @click="removeImage">Remove</button>
+    <el-input type="textarea" v-model="text" v-on:keydown.enter="addMessage" />
+    <div class="label-container">
+      <div id="image-container">
+        <div v-if="!image">
+          <div class="button-container" style="display:flex;">
+            <div>
+              <label @click="addMessage" class="upload-img-btn">send</label>
+            </div>
+            <div>
+              <label class="upload-img-btn">
+                upload
+                <input type="file" @change="onFileChange" style="display:none" />
+              </label>
+            </div>
+          </div>
+        </div>
+        <div v-else>
+          <div class="label-container">
+            <div>
+              <label @click="addMessage" class="upload-img-btn">send</label>
+            </div>
+            <div>
+              <label class="upload-img-btn">
+                upload
+                <input type="file" @change="onFileChange" style="display:none" />
+              </label>
+            </div>
+            <div>
+              <label @click="removeImage" class="upload-img-btn">Remove</label>
+            </div>
+          </div>
+          <img :src="image" class="image" />
+        </div>
       </div>
     </div>
-    <el-dialog title :visible.sync="dialogVisible" width="30%">
-      <div class="image-container">
-        <img src="@/assets/google_sign_in.png" @click="login" />
-      </div>
-    </el-dialog>
-    <el-button @click="addMessage">送信する</el-button>
   </div>
 </template>
 
@@ -62,6 +74,7 @@ export default {
     },
     removeImage: function() {
       this.image = "";
+      this.file = "";
     },
     addMessage(event) {
       if (this.keyDownedForJPComversion(event)) {
@@ -135,33 +148,6 @@ export default {
       const codeForConversion = 229;
       return event.keyCode === codeForConversion;
     }
-    // openLoginModal() {
-    //   this.dialogVisible = true;
-    // },
-    // login() {
-    //   const provider = new firebase.auth.GoogleAuthProvider();
-    //   firebase
-    //     .auth()
-    //     .signInWithPopup(provider)
-    //     .then(result => {
-    //       db.collection("users").add({
-    //         id: result.user.uid,
-    //         name: result.user.displayName,
-    //         thumbnail: result.user.photoURL,
-    //         email: result.user.email
-    //       });
-    //       const user = result.user;
-    //       console.log(provider);
-    //       this.setUser(user);
-    //       console.log(result);
-    //       console.log(this.$store.state.user);
-    //       console.log(user);
-    //       this.dialogVisible = false;
-    //     })
-    //     .catch(error => {
-    //       window.alert(error);
-    //     });
-    // }
   },
   data() {
     return {
@@ -185,27 +171,16 @@ export default {
 
 <style scoped>
 .input-container {
-  padding: 10px;
-  height: 100%;
+  width: 100%;
+  height: auto;
+}
+
+#image-container {
   display: flex;
   flex-wrap: wrap;
 }
-.avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-}
-
-.textarea-container {
-  width: 95%;
-  height: 100%;
-}
-.file-container {
-  width: 100%;
-}
-.image-container {
+.label-container {
   display: flex;
-  justify-content: center;
 }
 
 img {
@@ -213,7 +188,20 @@ img {
   cursor: pointer;
 }
 .image {
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: auto;
+}
+.upload-img-btn {
+  margin: 0 0 0 2px;
+  padding: 12px 20px;
+  border-radius: 4px;
+  max-width: 50px;
+  font-size: 14px;
+  text-align: center;
+  display: block;
+  background-color: white;
+  color: black;
+  box-shadow: 0 2px 4px rgba(146, 146, 146, 0.8);
+  cursor: pointer;
 }
 </style>

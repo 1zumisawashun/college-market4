@@ -99,8 +99,14 @@ export default {
         snapshot.docChanges().forEach(change => {
           /*eslint-disable*/
           const doc = change.doc;
+          console.log(change.type);
+          console.log(change.doc);
+          console.log(snapshot.docChanges());
           if (change.type === "added") {
             this.posts.push({ id: doc.id, ...doc.data() });
+          } else if (change.type === "modified") {
+            this.posts.update({ id: doc.id, ...doc.data() });
+            console.log("modifiedされました");
           }
         });
       });
