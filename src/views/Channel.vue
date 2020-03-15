@@ -52,35 +52,16 @@ export default {
             console.log("New Message :", change.doc.data());
             this.messages.push({ id: doc.id, ...doc.data() });
           } else if (change.type === "removed") {
-            console.log("remove message :", change.doc.data());
             console.log(doc.id);
             const num = this.messages.length - 1;
             const element = this.messages;
-            for (let i = 0; i <= num - 1; i++) {
+            for (let i = 0; i <= num; i++) {
               if (doc.id === element[i].id) {
                 this.messages.splice(i, 1);
               }
               console.log(element[i].id);
               console.log(this.messages);
             }
-          } else if (change.type === "modified") {
-            console.log("update message :", change.doc.data());
-            this.messages.push({ id: doc.id, ...doc.data() });
-          }
-        });
-      });
-    db.collection("channels")
-      .doc(channelId)
-      .collection("images")
-      .orderBy("createdAt")
-      .onSnapshot(snapshot => {
-        snapshot.docChanges().forEach(change => {
-          /*eslint-disable*/
-          const doc = change.doc;
-          if (change.type === "added") {
-            console.log("New Images :", change.doc.data());
-            this.images.push({ id: doc.id, ...doc.data() });
-            console.log(this.images);
           }
         });
       });

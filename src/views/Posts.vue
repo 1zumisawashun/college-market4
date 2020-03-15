@@ -82,17 +82,6 @@ export default {
     }
   },
   mounted() {
-    // db.collection("posts")
-    //   .get()
-    //   .then(querySnapshot => {
-    //     querySnapshot.forEach(doc => {
-    //       this.posts.push({ id: doc.id, ...doc.data() });
-    //       console.log(doc.data());
-    //       console.log(doc.id);
-    //     });
-    //   });
-    // console.log(this.status);
-
     db.collection("posts")
       .orderBy("createdAt")
       .onSnapshot(snapshot => {
@@ -104,9 +93,6 @@ export default {
           console.log(snapshot.docChanges());
           if (change.type === "added") {
             this.posts.push({ id: doc.id, ...doc.data() });
-          } else if (change.type === "modified") {
-            this.posts.update({ id: doc.id, ...doc.data() });
-            console.log("modifiedされました");
           }
         });
       });
@@ -209,6 +195,8 @@ p {
   margin: 0;
   padding: 0;
 }
+
+/* ここから変更を加えてsoldoutの時にwrapperを覆うようにする */
 .thumbnail-wrapper::after {
   transition: 0.3s;
   content: "";
@@ -247,6 +235,8 @@ p {
   transform: translate(-50%, -50%);
   opacity: 1;
 }
+
+/* ここまでの中身で変える */
 
 @media screen and (max-width: 479px) {
   .posts-container {

@@ -198,6 +198,9 @@ export default {
       });
       this.image = null;
     },
+    removeDialog() {
+      this.dialogVisible = false;
+    },
     makeChannels(title, postedUserId, image) {
       console.log("makeChannels");
       db.collection("channels").add({

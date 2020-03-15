@@ -141,6 +141,7 @@ export default {
         .signInWithPopup(provider)
         .then(result => {
           if (result.user.email.match(/ac.jp/)) {
+            //大学ドメインの許可
             db.collection("users").add({
               id: result.user.uid,
               name: result.user.displayName,
@@ -153,6 +154,17 @@ export default {
             console.log(result); //resultの中にログインuser情報を保持している。多分引数だからresult関係なしに持ってこれる奴や
             console.log(this.$store.state.user);
             console.log(user);
+            this.dialogVisible = false;
+          } else if (result.user.email.match(/1zushun.soccer/)) {
+            //管理者ドメインの許可
+            db.collection("users").add({
+              id: result.user.uid,
+              name: result.user.displayName,
+              thumbnail: result.user.photoURL,
+              email: result.user.email
+            });
+            const user = result.user;
+            this.setUser(user);
             this.dialogVisible = false;
           } else {
             firebase
