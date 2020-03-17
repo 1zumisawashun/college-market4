@@ -99,7 +99,9 @@ export default {
       modal: false,
       drawer: false,
       direction: "ltr",
-      booktitle: []
+      booktitle: [],
+      users: [],
+      currentUser: ""
     };
   },
   mounted() {
@@ -117,8 +119,16 @@ export default {
         this.setUser(user);
       }
     });
+    db.collection("users")
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          this.users.push({ id: doc.id, ...doc.data() });
+        });
+        console.log(this.users);
+        console.log(this.users.email);
+      });
   },
-
   methods: {
     ...mapActions(["setUser"]),
     logout() {
@@ -127,7 +137,10 @@ export default {
         .signOut()
         .then(() => {
           this.setUser(null);
+          this.currentUser = "";
           window.alert("ログアウトに成功しました");
+          //リロードしないとcurrentUserが残ってしまうため
+          console.log(this.currentUser);
         })
         .catch(e => {
           window.alert("ログアウトに失敗しました");
@@ -140,33 +153,51 @@ export default {
         .auth()
         .signInWithPopup(provider)
         .then(result => {
+          //大学ドメインを持つユーザ―の許可
           if (result.user.email.match(/ac.jp/)) {
-            //大学ドメインの許可
-            db.collection("users").add({
-              id: result.user.uid,
-              name: result.user.displayName,
-              thumbnail: result.user.photoURL,
-              email: result.user.email
-            });
-            const user = result.user;
-            console.log(provider);
-            this.setUser(user);
-            console.log(result); //resultの中にログインuser情報を保持している。多分引数だからresult関係なしに持ってこれる奴や
-            console.log(this.$store.state.user);
-            console.log(user);
-            this.dialogVisible = false;
+            let self = this;
+            //dbに同じ情報があるか調べる
+            db.collection("users")
+              .where("email", "==", result.user.email)
+              .get()
+              .then(querySnapshot => {
+                let array = [];
+                querySnapshot.forEach(doc => {
+                  array.push({ id: doc.id, ...doc.data() });
+                });
+                console.log(this.currentUser);
+                self.currentUser = array;
+              })
+              .then(() => {
+                if (this.currentUser.length == 0) {
+                  //初めてのログインならdbに保存する
+                  db.collection("users").add({
+                    id: result.user.uid,
+                    name: result.user.displayName,
+                    thumbnail: result.user.photoURL,
+                    email: result.user.email
+                  });
+                  const user = result.user;
+                  this.setUser(user);
+                  this.dialogVisible = false;
+                  console.log("初ログインのユーザーでログインしました");
+                } else if (this.currentUser.length == 1) {
+                  //過去にログインをしたことのあるユーザーはdbに保存しない
+                  this.dialogVisible = false;
+                  const user = result.user;
+                  this.setUser(user);
+                  console.log("過去にログインしたユーザーでログインしました");
+                  console.log(result.user.email); //resultの中にログインuser情報を保持している。多分引数だからresult関係なしに持ってこれる奴や
+                }
+              });
+            //管理者ドメインの許可をします
           } else if (result.user.email.match(/1zushun.soccer/)) {
-            //管理者ドメインの許可
-            db.collection("users").add({
-              id: result.user.uid,
-              name: result.user.displayName,
-              thumbnail: result.user.photoURL,
-              email: result.user.email
-            });
             const user = result.user;
             this.setUser(user);
             this.dialogVisible = false;
+            console.log("管理者ユーザーでログインしました");
           } else {
+            //大学ドメインでもなく管理者emailでは無かったらログアウトする
             firebase
               .auth()
               .signOut()

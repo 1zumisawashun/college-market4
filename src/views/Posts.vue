@@ -10,14 +10,24 @@
     </div>
     <div class="posts-container">
       <div class="card l-card" v-for="(post, index) in this.itemsFiltered" :key="index">
-        <div class="image-block l-thumbnail">
-          <figure class="thumbnail-wrapper">
-            <img :src="post.image" class="image" />
-          </figure>
-          <router-link :to="`posts/${post.id}`">
-            <span class="more-text">Read More</span>
-          </router-link>
-        </div>
+        <router-link :to="`posts/${post.id}`">
+          <div
+            class="image-block"
+            :class="{'l-thumbnail':post.onsale, 'hide-l-thumbnail':post.soldout}"
+          >
+            <figure
+              :class="{'thumbnail-wrapper':post.onsale, 'hide-thumbnail-wrapper':post.soldout}"
+            >
+              <img :src="post.image" class="image" />
+            </figure>
+            <div v-show="post.onsale">
+              <span class="more-text">Read More</span>
+            </div>
+            <div v-show="post.soldout">
+              <span class="hide-more-text">Sold Out</span>
+            </div>
+          </div>
+        </router-link>
         <div class="content-block text-content">
           <div class="content">{{ post.title }}</div>
           <div class="posted-user">
@@ -49,7 +59,7 @@ export default {
       price: "",
       condition: "",
       onSale: false,
-      soldOut: "",
+      soldOut: false,
 
       currentDate: new Date(),
       posts: [],
@@ -101,6 +111,7 @@ export default {
 </script>
 
 <style scoped>
+/* ここからheaderの要素になる */
 .header {
   width: 100%;
   height: 300px;
@@ -111,7 +122,7 @@ export default {
 
 /* 透過した黒を上から重ねるイメージ */
 .header::before {
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.6);
   /* 自由に位置指定 */
   position: absolute;
   width: 100%;
@@ -131,6 +142,7 @@ p {
   font-weight: bold;
   font-size: 25px;
 }
+/* ここまでがheaderの要素になる */
 
 .image {
   width: 100%;
@@ -184,19 +196,29 @@ p {
   display: flex;
   flex-wrap: wrap;
 }
-.l-thumbnail {
+
+/* ここからがcardを覆う要素を指定している */
+.l-thumbnail,
+.hide-l-thumbnail {
   position: relative;
   overflow: hidden;
   width: 100%;
   height: auto;
 }
-.thumbnail-wrapper {
+
+.thumbnail-wrapper,
+.hide-thumbnail-wrapper {
   display: block;
   margin: 0;
   padding: 0;
 }
 
-/* ここから変更を加えてsoldoutの時にwrapperを覆うようにする */
+.thumbnail-wrapper img,
+.hide-thumbnail-wrapper img {
+  display: block;
+  max-width: 100%;
+}
+
 .thumbnail-wrapper::after {
   transition: 0.3s;
   content: "";
@@ -207,13 +229,10 @@ p {
   display: block;
   width: 100%;
   height: 100%;
-  background: lightgreen;
+  background-color: rgba(0, 0, 0, 0.6);
   opacity: 0.8;
 }
-.thumbnail-wrapper img {
-  display: block;
-  max-width: 100%;
-}
+
 .more-text {
   transition: 0.5s;
   transition: opacity 0.5s, transform 0.8s;
@@ -231,12 +250,42 @@ p {
 .l-card:hover .thumbnail-wrapper::after {
   transform: translateY(0);
 }
+
 .l-card:hover .more-text {
   transform: translate(-50%, -50%);
   opacity: 1;
 }
 
-/* ここまでの中身で変える */
+/* ここから変更を加えてsoldoutの時にwrapperを覆うようにする */
+.hide-l-thumbnail::before {
+  /* transition: 0.3s; */
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  /* transform: translateY(-100%); */
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: lightcoral;
+  opacity: 0.8;
+}
+.hide-more-text {
+  /* transition: 0.5s;*/
+  /* transition: opacity 0.5s, transform 0.8s; */
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  /* 上のtransformを消したら真ん中に表示できなくなる */
+  display: inline-block;
+  padding: 6px 12px 8px;
+  color: #fff;
+  font-size: 14px;
+  border: 1px solid #fff;
+  /* opacity: 0;*/
+  /* opacity:0で完全に透明にしている */
+}
 
 @media screen and (max-width: 479px) {
   .posts-container {

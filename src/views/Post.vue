@@ -113,9 +113,7 @@ export default {
       onsale: false,
       soldout: false,
       file: "",
-      image: "",
-
-      showdata: false
+      image: ""
     };
   },
   computed: {
@@ -191,12 +189,27 @@ export default {
                 name: this.user.displayName,
                 thumbnail: this.user.photoURL
               }
+            })
+            .then(() => {
+              this.title = null;
+              this.content = null;
+              this.status = null;
+              this.college = null;
+              this.major = null;
+              this.price = null;
+              this.cashless = null;
+              this.cash = null;
+              this.other = null;
+              this.onsale = null;
+              this.soldout = null;
+              this.file = null;
+              this.image = null;
+              this.url = null;
             });
         });
         console.log(this.url);
         window.alert("firestoreに格納しました。これで表示されます");
       });
-      this.image = null;
     },
     removeDialog() {
       this.dialogVisible = false;

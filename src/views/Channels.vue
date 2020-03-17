@@ -1,6 +1,6 @@
 <template>
   <div class="all-container">
-    <p>相手から</p>
+    <p>THE BOOK OTHER STUDENTS WANT</p>
     <!-- eslint-disable -->
     <div v-for="(posted, index) in postedChannels" :key="`second-${index}`">
       <div class="card-container">
@@ -18,7 +18,7 @@
       </div>
     </div>
 
-    <p>自分から</p>
+    <p>THE BOOK YOU WANT</p>
     <div v-for="(current, index) in currentChannels" :key="`third-${index}`">
       <div class="card-container">
         <div class="image-container">
@@ -73,7 +73,7 @@ export default {
           } else if (change.type === "removed") {
             const num = this.postedChannels.length - 1;
             const element = this.postedChannels;
-            for (let i = 0; i <= num - 1; i++) {
+            for (let i = 0; i <= num; i++) {
               if (doc.id === element[i].id) {
                 this.postedChannels.splice(i, 1);
               }
@@ -94,7 +94,7 @@ export default {
           } else if (change.type === "removed") {
             const num = this.currentChannels.length - 1;
             const element = this.currentChannels;
-            for (let i = 0; i <= num - 1; i++) {
+            for (let i = 0; i <= num; i++) {
               if (doc.id === element[i].id) {
                 this.currentChannels.splice(i, 1);
               }
@@ -111,6 +111,9 @@ export default {
 .all-container {
   width: 100%;
   height: auto;
+}
+.all-container p {
+  font-weight: bold;
 }
 .card-container {
   width: 100%;
@@ -137,7 +140,7 @@ export default {
   margin: 10px;
 }
 .image-container {
-  width: 15%;
+  width: 10%;
   height: auto;
 }
 .link-container {
@@ -145,9 +148,10 @@ export default {
   height: auto;
 }
 .button-container {
-  width: 15%;
+  width: 20%;
   height: auto;
-  text-align: center;
+  text-align: right;
+  padding: 15px 20px 0 0;
   margin-top: 10px;
 }
 
