@@ -231,6 +231,7 @@ p {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.6);
   opacity: 0.8;
+  border-radius: 10px 10px 0 0;
 }
 
 .more-text {
@@ -269,6 +270,7 @@ p {
   height: 100%;
   background-color: lightcoral;
   opacity: 0.8;
+  border-radius: 10px 10px 0 0;
 }
 .hide-more-text {
   /* transition: 0.5s;*/

@@ -191,7 +191,7 @@ export default {
                 }
               });
             //管理者ドメインの許可をします
-          } else if (result.user.email.match(/1zushun.soccer/)) {
+          } else if (result.user.email.match(/1zushun[.]soccer/)) {
             const user = result.user;
             this.setUser(user);
             this.dialogVisible = false;
@@ -312,7 +312,7 @@ body {
 }
 .my-modal-close {
   position: fixed;
-  top: 0;
+  top: 20px;
   right: 20px;
   color: white;
   z-index: 101;
@@ -325,7 +325,7 @@ body {
   margin: 0 auto;
   background-color: white;
   padding: 30px;
-  border-radius: 10px;
+  border-radius: 5px;
 }
 .drower-container {
   display: none;
