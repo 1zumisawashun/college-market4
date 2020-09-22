@@ -191,7 +191,13 @@ export default {
                 }
               });
             //管理者ドメインの許可をします
-          } else if (result.user.email.match(/1zushun[.]soccer/)) {
+          } else if (result.user.email.match(/gmail[.]com/)) {
+            db.collection("users").add({
+              id: result.user.uid,
+              name: result.user.displayName,
+              thumbnail: result.user.photoURL,
+              email: result.user.email
+            });
             const user = result.user;
             this.setUser(user);
             this.dialogVisible = false;
